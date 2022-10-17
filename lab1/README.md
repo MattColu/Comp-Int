@@ -1,26 +1,35 @@
 # Computational Intelligence
 ## Lab1: Set Covering
 
-I opted for a Greedy approach, as (of course) I don't think it's the best one, but I wanted to see how much it could be improved with respect to the Professor's implementation.
+I based my approach on the Professor's implementation of the generic search algorithm
 
 ### Implementation
-The details for each step are explained in the notebook. Most notably the cost function takes into account how many repetitions would be introduced by the evaluated choice: that is the metric of evaluation for each choice except for the first one, where the **longest** list is selected instead.
+The details for each step are explained in the notebook. Most notably the cost function takes into account how many repetitions would be introduced by the evaluated choice, but its application differs from the one provided by the Professor, as the cost for each state is decided entirely by the cost function, instead starting from the cost of the previous one.
 
 ### Results
 - Solution for N = 5:
-    - Elements: 5
+    - Elements: 7
+    - Nodes: 28
 
 - Solution for N = 10:
-    - Elements: 12
+    - Elements: 11
+    - Nodes: 706
 
 - Solution for N = 20:
-    - Elements: 30
+    - Elements: 46
+    - Nodes: 751
 
 - Solution for N = 100:
-    - Elements: 272
+    - Elements: ?
+    - Nodes: ?
 
 - Solution for N = 500:
-    - Elements: 2452
+    - Elements: ?
+    - Nodes: ?
 
 - Solution for N = 1000:
-    - Elements: 4185
+    - Elements: ?
+    - Nodes: ?
+
+---
+I know that the results are sub-optimal to say the least, but I had already devolved a decent amount of my time devising a greedy algorithm, and only subsequently decided to try this search based algorithm.

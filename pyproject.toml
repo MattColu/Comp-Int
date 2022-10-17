@@ -3,3 +3,6 @@ name = "Computational Intelligence"
 version = "1.0.0"
 description = "Material for the 2022/23 Computational Intelligence course"
 authors = ["Matteo Colucci"]
+
+[tool.poetry.dependencies]
+logging = "^0.4.9.6"
