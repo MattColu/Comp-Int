@@ -32,4 +32,4 @@ The details for each step are explained in the notebook. Most notably the cost f
     - Nodes: ?
 
 ---
-I know that the results are sub-optimal to say the least, but I had already devolved a decent amount of my time devising a greedy algorithm, and only subsequently decided to try this search based algorithm.
+I know that the results are sub-optimal to say the least, but I had already devoted a decent amount of my time devising a greedy algorithm, and only subsequently decided to try this search based algorithm.
