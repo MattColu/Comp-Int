@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 from collections import namedtuple
+import pickle
+import itertools
 
 Nimply = namedtuple("Nimply", "row, num_objects")
 
@@ -56,8 +58,11 @@ class Nim:
     #RL
     def get_state_and_reward(self):
         reward = -1
-        if self.endTest() and self._turn == 0:
-            reward = 0
+        if self.endTest():
+            if self._turn == 0:
+                reward = 1
+            else:
+                reward = -2
         return self.rows, reward
 
 
@@ -95,9 +100,6 @@ class Agent(object):
                     next_move = action
             if len(uncharted) != 0:
                 next_move = random.choice(uncharted)
-                new_state = Nim(l).fromRows(state.rows)
-                new_state.nimming(next_move)
-                self.G[new_state.rows] = maxG
         return next_move
 
     def update_state_history(self, state, reward):
@@ -107,6 +109,8 @@ class Agent(object):
         target = 0
 
         for prev, reward in reversed(self.state_history):
+            if prev not in self.G:
+                self.G[prev] = np.random.uniform(low=1.0, high=0.1)
             self.G[prev] = self.G[prev] + self.alpha * (target - self.G[prev])
             target += reward
 
@@ -149,9 +153,26 @@ def expert(game) -> Nimply:
                 return Nimply(i,row-lineNimSum)
     return pure_random(game)
 
+def evaluate(gamesize: int, robot: Agent) -> float:
+    win_count = 0
+    neval = 100
+    robot.random_factor = 0
+    turn = 1
+    for _ in range(neval):
+        game = Nim(gamesize)
+        while not game.endTest():
+            turn = 1 - turn
+            if not turn:
+                game.nimming(robot.choose_action(game))
+            else:
+                game.nimming(pure_random(game))
+        if turn:
+            win_count += 1
+    return win_count/neval
+
 if __name__ == '__main__':
     nrows = 3
-    nepochs = 5000
+    nepochs = 50000
     game = Nim(nrows)
     robot = Agent(game, alpha=0.1, random_factor=0.4)
 
@@ -165,3 +186,10 @@ if __name__ == '__main__':
             robot.update_state_history(state, reward)
         robot.learn()
         game = Nim(nrows)
+    
+    with open("./agent", "bw") as out:
+        print("Saving to file...")
+        #print(robot.G)
+        pickle.dump(robot.G, out)
+    print(evaluate(nrows, robot))
+        
