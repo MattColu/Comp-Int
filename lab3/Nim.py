@@ -23,6 +23,9 @@ class Nim:
         assert self._k is None or num_objects <= self._k
         self._rows[row] -= num_objects
         self._turn = 1 - self._turn
+        
+        if self._rows[row]==0:
+            self._rows.pop(row)
 
     def __bool__(self):
         return sum(self._rows) > 0
@@ -137,3 +140,21 @@ def sandbox(game: Nim, agent):
         print("You lost")
     else:
         print("Agent lost")
+        
+def evaluate(gamesize: int,agent,prob:float,eval_amount:int) -> float:
+    win_count = 0
+    for _ in range(eval_amount):
+        game = Nim(gamesize)
+        turn=1   #inizia l'individuo turno 0, random turno 1
+        while not game.endTest():
+            turn = 1 - turn
+            if not turn:
+                game.nimming(agent(game))
+            else:
+                if random.random() < prob:
+                    game.nimming(expert(game))
+                else:
+                    game.nimming(pure_random(game))
+        if turn:   #gioco finito e ultima mossa di random
+            win_count += 1
+    return win_count/eval_amount
