@@ -125,6 +125,7 @@ def lose_game() -> Nimply:
     return None
 
 def sandbox(game: Nim, agent):
+    print("Format: #row #amount")
     game.board()
     turn=1
     while not game.endTest():
